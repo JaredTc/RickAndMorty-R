@@ -1,24 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import { Navbar } from './components/navbar';
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
+import '../node_modules/bootstrap/dist/js/bootstrap.bundle'
+import { useEffect, useState } from 'react';
+// import Characterss from './components/Characterss';
+import { CharacterList } from './components/CharacterList';
+
+
 
 function App() {
+  const [characters, setCharacters] = useState([])
+
+  const initialurl = "https://rickandmortyapi.com/api/character";
+
+  const fetchCharacters = (url) => {
+    fetch(url)
+      .then(response => response.json())
+      .then(data => setCharacters(data.results))
+      .catch(error => console.log(error))
+  };
+  useEffect(() => {
+    fetchCharacters(initialurl)
+
+  }, [])
+
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar brand="Rick and Morty view" />
+      <div className="container mt-5">
+        <CharacterList characters={characters} />
+      </div>
+
+
+
+
+
+    </>
   );
 }
 
